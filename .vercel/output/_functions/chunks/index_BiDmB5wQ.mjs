@@ -1,7 +1,7 @@
-import { c as createComponent } from './astro-component_DL_opeNw.mjs';
+import { c as createComponent } from './astro-component_Bicik8Fu.mjs';
 import 'piccolore';
-import { p as renderComponent, t as renderTemplate, o as maybeRenderHead, j as addAttribute } from './entrypoint_C4QlUByW.mjs';
-import { $ as $$BaseLayout } from './BaseLayout_B_oJ7vVj.mjs';
+import { p as renderComponent, t as renderTemplate, o as maybeRenderHead, j as addAttribute } from './entrypoint_Cpe5csRA.mjs';
+import { $ as $$BaseLayout } from './BaseLayout_C3Uw0-8h.mjs';
 import { b as getShoes } from './db_K85WP9fX.mjs';
 
 const $$Index = createComponent(async ($$result, $$props, $$slots) => {

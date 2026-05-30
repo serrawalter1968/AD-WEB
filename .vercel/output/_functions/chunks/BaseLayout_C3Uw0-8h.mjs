@@ -1,6 +1,6 @@
-import { c as createComponent } from './astro-component_DL_opeNw.mjs';
+import { c as createComponent } from './astro-component_Bicik8Fu.mjs';
 import 'piccolore';
-import { q as renderHead, s as renderSlot, t as renderTemplate } from './entrypoint_C4QlUByW.mjs';
+import { q as renderHead, s as renderSlot, t as renderTemplate } from './entrypoint_Cpe5csRA.mjs';
 import 'clsx';
 
 const $$BaseLayout = createComponent(($$result, $$props, $$slots) => {
