@@ -67,8 +67,8 @@ const filteredShoes = selectedCategory ? shoes.filter((s) => s.category === sele
     ) : (
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-10">
         {filteredShoes.map((shoe) => (
-          <article class="group cursor-pointer">
-            <div class="relative aspect-[3/4] bg-[#f5f0ee] rounded-sm overflow-hidden mb-4">
+          <article class="group cursor-pointer border border-[#3d3d3d]/20 hover:border-[#3d3d3d]/60 rounded-sm p-3 transition-all duration-300">
+            <div class="relative aspect-[3/4] bg-[#f5f0ee] rounded-sm overflow-hidden mb-3">
               {shoe.image_url ? (
                 <>
                   <img
@@ -99,7 +99,7 @@ const filteredShoes = selectedCategory ? shoes.filter((s) => s.category === sele
               )}
             </div>
 
-            <div class="px-1">
+            <div>
               <h3 class="font-['Playfair_Display'] text-base font-medium text-[#3d3d3d] leading-tight">{shoe.name}</h3>
               <div class="flex items-center justify-between mt-1.5">
                 {shoe.category && (
