@@ -3,7 +3,7 @@ import { SignJWT, jwtVerify } from 'jose';
 import type { APIContext } from 'astro';
 
 const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET || 'fallback-secret-do-not-use-in-prod');
-const COOKIE_NAME = 'adweb_token';
+export const COOKIE_NAME = 'adweb_token';
 
 export async function hashPassword(password: string): Promise<string> {
   return bcrypt.hash(password, 10);
