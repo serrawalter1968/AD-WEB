@@ -11,8 +11,11 @@ const { title } = Astro.props;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title ? `${title} | AD Web` : 'AD Web - Stock de Calzado'}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
   </head>
-  <body class="bg-gray-50 text-gray-900 min-h-screen">
+  <body class="bg-stone-50 text-stone-800 min-h-screen font-['Inter']">
     <slot />
   </body>
 </html>
