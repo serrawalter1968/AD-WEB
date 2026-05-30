@@ -1,0 +1,29 @@
+import { c as createComponent } from './astro-component_DL_opeNw.mjs';
+import 'piccolore';
+import { p as renderComponent, t as renderTemplate, o as maybeRenderHead, j as addAttribute } from './entrypoint_C4QlUByW.mjs';
+import { $ as $$BaseLayout } from './BaseLayout_B_oJ7vVj.mjs';
+import { b as getShoes } from './db_K85WP9fX.mjs';
+
+const $$Index = createComponent(async ($$result, $$props, $$slots) => {
+  const shoes = await getShoes();
+  const categories = [...new Set(shoes.map((s) => s.category).filter(Boolean))];
+  return renderTemplate`${renderComponent($$result, "BaseLayout", $$BaseLayout, {}, { "default": async ($$result2) => renderTemplate` ${maybeRenderHead()}<header class="bg-white shadow-sm"> <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6"> <div class="flex justify-between items-center"> <div> <h1 class="text-3xl font-bold text-pink-600">AD Web</h1> <p class="text-gray-500 mt-1">Diseños exclusivos en calzado femenino</p> </div> <a href="/admin" class="text-sm text-gray-500 hover:text-gray-700">Admin</a> </div> </div> </header> <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8"> ${categories.length > 0 && renderTemplate`<div class="flex gap-2 mb-8 flex-wrap"> <a href="/" class="px-4 py-2 rounded-full bg-pink-100 text-pink-700 text-sm font-medium hover:bg-pink-200">
+Todas
+</a> ${categories.map((cat) => renderTemplate`<a${addAttribute(`/?categoria=${cat}`, "href")} class="px-4 py-2 rounded-full bg-gray-100 text-gray-600 text-sm font-medium hover:bg-gray-200"> ${cat} </a>`)} </div>`} ${shoes.length === 0 ? renderTemplate`<div class="text-center py-20"> <p class="text-gray-400 text-lg">No hay productos disponibles todavía.</p> </div>` : renderTemplate`<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"> ${shoes.map((shoe) => renderTemplate`<div class="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-shadow"> <div class="aspect-square bg-gray-100"> ${shoe.image_url ? renderTemplate`<img${addAttribute(shoe.image_url, "src")}${addAttribute(shoe.name, "alt")} class="w-full h-full object-cover">` : renderTemplate`<div class="w-full h-full flex items-center justify-center text-gray-300"> <svg class="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24"> <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path> </svg> </div>`} </div> <div class="p-4"> <div class="flex justify-between items-start mb-1"> <h3 class="font-semibold text-gray-900">${shoe.name}</h3> <span class="text-pink-600 font-bold">$${Number(shoe.price).toFixed(2)}</span> </div> ${shoe.category && renderTemplate`<span class="text-xs text-gray-400">${shoe.category}</span>`} ${shoe.description && renderTemplate`<p class="text-sm text-gray-500 mt-2 line-clamp-2">${shoe.description}</p>`} <div class="mt-3 flex items-center gap-2"> <span${addAttribute(`inline-block px-2 py-0.5 rounded text-xs font-medium ${shoe.quantity > 0 ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}`, "class")}> ${shoe.quantity > 0 ? `${shoe.quantity} en stock` : "Agotado"} </span> </div> </div> </div>`)} </div>`} </main> <footer class="border-t mt-12"> <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 text-center text-sm text-gray-400">
+&copy; ${(/* @__PURE__ */ new Date()).getFullYear()} AD Web - Diseños exclusivos
+</div> </footer> ` })}`;
+}, "D:/ProyectosWalter/AD-web/src/pages/index.astro", void 0);
+
+const $$file = "D:/ProyectosWalter/AD-web/src/pages/index.astro";
+const $$url = "";
+
+const _page = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: $$Index,
+  file: $$file,
+  url: $$url
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const page = () => _page;
+
+export { page };
