@@ -72,7 +72,7 @@ export async function updateShoe(id: number, shoe: Partial<{
 
   const result = await sql(
     `UPDATE shoes SET ${fields.join(', ')} WHERE id = $${idx} RETURNING *`,
-    ...values
+    values
   );
   return result.length ? result[0] as Shoe : null;
 }
