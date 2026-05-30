@@ -87,13 +87,13 @@ const filteredShoes = selectedCategory ? shoes.filter((s) => s.category === sele
               )}
 
               {shoe.quantity === 0 && (
-                <div class="absolute top-3 left-3 bg-white/95 text-[#c9a8a8] text-[10px] tracking-[0.15em] uppercase px-3 py-1.5 font-medium">
+                <div class="absolute top-3 left-3 bg-[#d4b5b5]/90 text-white text-[11px] tracking-[0.15em] uppercase px-3 py-1.5 font-medium rounded-sm">
                   Agotado
                 </div>
               )}
 
               {shoe.quantity > 0 && shoe.quantity <= 3 && (
-                <div class="absolute top-3 left-3 bg-white/95 text-[#c9a8a8] text-[10px] tracking-[0.15em] uppercase px-3 py-1.5 font-medium">
+                <div class="absolute top-3 left-3 bg-[#e8c9a0]/90 text-white text-[11px] tracking-[0.15em] uppercase px-3 py-1.5 font-medium rounded-sm">
                   Últimas unidades
                 </div>
               )}
@@ -105,9 +105,9 @@ const filteredShoes = selectedCategory ? shoes.filter((s) => s.category === sele
                 {shoe.category && (
                   <span class="text-[#c9a8a8]/70 text-[11px] tracking-[0.12em] uppercase font-light">{shoe.category}</span>
                 )}
-                <span class="flex items-center gap-1.5">
-                  <span class={`w-1 h-1 rounded-full ${shoe.quantity > 0 ? 'bg-[#9cb4a8]' : 'bg-[#d4c5c5]'}`} />
-                  <span class="text-[11px] text-[#b5a5a5] font-light">{shoe.quantity > 0 ? `${shoe.quantity} en stock` : 'Agotado'}</span>
+                <span class={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full ${shoe.quantity > 0 ? 'bg-[#f0ebe7]' : 'bg-[#f5ecec]'}`}>
+                  <span class={`w-1.5 h-1.5 rounded-full ${shoe.quantity > 0 ? 'bg-[#9cb4a8]' : 'bg-[#d4c5c5]'}`} />
+                  <span class={`text-xs font-medium ${shoe.quantity > 0 ? 'text-[#7a6a6a]' : 'text-[#c9a8a8]'}`}>{shoe.quantity > 0 ? `${shoe.quantity} en stock` : 'Agotado'}</span>
                 </span>
               </div>
               {shoe.description && (

@@ -92,41 +92,46 @@ export default function ShoeForm({ initialData }: Props) {
 
   return (
     <div className="max-w-2xl mx-auto">
-      <h1 className="text-2xl font-bold mb-6">{isEdit ? 'Editar producto' : 'Agregar producto'}</h1>
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold text-[#3d3d3d] tracking-tight">{isEdit ? 'Editar producto' : 'Agregar producto'}</h1>
+        <p className="text-sm text-[#b5a5a5] font-light mt-1">Completá los datos del producto</p>
+      </div>
 
       {error && (
-        <div className="bg-red-50 text-red-600 p-3 rounded mb-4 text-sm">{error}</div>
+        <div className="bg-[#f5ecec] text-[#c9a8a8] p-3.5 rounded-lg mb-6 text-sm font-medium border border-[#f0e4e0]">{error}</div>
       )}
 
-      <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-sm space-y-4">
+      <form onSubmit={handleSubmit} className="bg-white p-8 rounded-lg shadow-sm border border-[#f0ebe7] space-y-5">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Nombre *</label>
+          <label className="block text-sm font-medium text-[#7a6a6a] mb-1.5 tracking-wide">Nombre *</label>
           <input
             type="text"
             value={form.name}
             onChange={(e) => setForm((p) => ({ ...p, name: e.target.value }))}
             required
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500 outline-none"
+            className="w-full px-3.5 py-2.5 border border-[#f0ebe7] rounded-lg focus:ring-2 focus:ring-[#c9a8a8] focus:border-[#c9a8a8] outline-none text-[#3d3d3d] placeholder:text-[#d4c5c5] transition-colors duration-150"
+            placeholder="Ej: Stiletto Clásico"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Descripción</label>
+          <label className="block text-sm font-medium text-[#7a6a6a] mb-1.5 tracking-wide">Descripción</label>
           <textarea
             value={form.description}
             onChange={(e) => setForm((p) => ({ ...p, description: e.target.value }))}
             rows={3}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500 outline-none"
+            className="w-full px-3.5 py-2.5 border border-[#f0ebe7] rounded-lg focus:ring-2 focus:ring-[#c9a8a8] focus:border-[#c9a8a8] outline-none text-[#3d3d3d] placeholder:text-[#d4c5c5] transition-colors duration-150 resize-none"
+            placeholder="Descripción del producto..."
           />
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-5">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Categoría</label>
+            <label className="block text-sm font-medium text-[#7a6a6a] mb-1.5 tracking-wide">Categoría</label>
             <select
               value={form.category}
               onChange={(e) => setForm((p) => ({ ...p, category: e.target.value }))}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500 outline-none"
+              className="w-full px-3.5 py-2.5 border border-[#f0ebe7] rounded-lg focus:ring-2 focus:ring-[#c9a8a8] focus:border-[#c9a8a8] outline-none text-[#3d3d3d] transition-colors duration-150"
             >
               <option value="">Seleccionar</option>
               <option value="Zapatos">Zapatos</option>
@@ -139,57 +144,59 @@ export default function ShoeForm({ initialData }: Props) {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Precio</label>
+            <label className="block text-sm font-medium text-[#7a6a6a] mb-1.5 tracking-wide">Precio ($)</label>
             <input
               type="number"
               step="0.01"
               value={form.price}
               onChange={(e) => setForm((p) => ({ ...p, price: e.target.value }))}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500 outline-none"
+              className="w-full px-3.5 py-2.5 border border-[#f0ebe7] rounded-lg focus:ring-2 focus:ring-[#c9a8a8] focus:border-[#c9a8a8] outline-none text-[#3d3d3d] placeholder:text-[#d4c5c5] transition-colors duration-150"
+              placeholder="0.00"
             />
           </div>
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Cantidad en stock *</label>
+          <label className="block text-sm font-medium text-[#7a6a6a] mb-1.5 tracking-wide">Cantidad en stock *</label>
           <input
             type="number"
             min="0"
             value={form.quantity}
             onChange={(e) => setForm((p) => ({ ...p, quantity: e.target.value }))}
             required
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-pink-500 outline-none"
+            className="w-full px-3.5 py-2.5 border border-[#f0ebe7] rounded-lg focus:ring-2 focus:ring-[#c9a8a8] focus:border-[#c9a8a8] outline-none text-[#3d3d3d] placeholder:text-[#d4c5c5] transition-colors duration-150"
+            placeholder="0"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Imagen</label>
+          <label className="block text-sm font-medium text-[#7a6a6a] mb-1.5 tracking-wide">Imagen</label>
           <input
             type="file"
             accept="image/*"
             onChange={handleUpload}
-            className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-pink-50 file:text-pink-700 hover:file:bg-pink-100 cursor-pointer"
+            className="w-full text-sm text-[#b5a5a5] file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-[#f5ecec] file:text-[#c9a8a8] hover:file:bg-[#f0e4e0] cursor-pointer transition-colors duration-150"
           />
-          {uploading && <p className="text-sm text-gray-500 mt-1">Subiendo imagen...</p>}
+          {uploading && <p className="text-sm text-[#b5a5a5] mt-1.5 font-light">Subiendo imagen...</p>}
           {form.image_url && (
-            <div className="mt-2 flex items-center gap-2">
-              <img src={form.image_url} alt="Preview" className="w-16 h-16 object-cover rounded" />
-              <span className="text-xs text-gray-500 truncate max-w-[200px]">{form.image_url}</span>
+            <div className="mt-3 flex items-center gap-3 p-3 bg-[#faf7f5] rounded-lg border border-[#f0ebe7]">
+              <img src={form.image_url} alt="Preview" className="w-16 h-16 object-cover rounded-md" />
+              <span className="text-xs text-[#b5a5a5] truncate max-w-[280px] font-light">{form.image_url}</span>
             </div>
           )}
         </div>
 
-        <div className="flex gap-3 pt-2">
+        <div className="flex gap-3 pt-4 border-t border-[#f0ebe7]">
           <button
             type="submit"
             disabled={saving || uploading}
-            className="bg-pink-600 text-white px-6 py-2 rounded-lg hover:bg-pink-700 disabled:opacity-50 cursor-pointer font-medium"
+            className="bg-[#c9a8a8] hover:bg-[#b89292] text-white px-6 py-2.5 rounded-lg disabled:opacity-50 cursor-pointer font-medium transition-colors duration-200 shadow-sm"
           >
             {saving ? 'Guardando...' : isEdit ? 'Guardar cambios' : 'Agregar producto'}
           </button>
           <a
             href="/admin"
-            className="bg-gray-200 text-gray-700 px-6 py-2 rounded-lg hover:bg-gray-300 text-center font-medium"
+            className="bg-[#f5f0ee] text-[#7a6a6a] px-6 py-2.5 rounded-lg hover:bg-[#f0ebe7] text-center font-medium transition-colors duration-150"
           >
             Cancelar
           </a>
