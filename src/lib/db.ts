@@ -70,7 +70,7 @@ export async function updateShoe(id: number, shoe: Partial<{
   fields.push(`updated_at = NOW()`);
   values.push(id);
 
-  const result = await sql(
+  const result = await sql.query(
     `UPDATE shoes SET ${fields.join(', ')} WHERE id = $${idx} RETURNING *`,
     values
   );
