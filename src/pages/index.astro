@@ -60,10 +60,7 @@ const categories = [...new Set(shoes.map((s) => s.category).filter(Boolean))];
               )}
             </div>
             <div class="p-4">
-              <div class="flex justify-between items-start mb-1">
-                <h3 class="font-semibold text-gray-900">{shoe.name}</h3>
-                <span class="text-pink-600 font-bold">${Number(shoe.price).toFixed(2)}</span>
-              </div>
+              <h3 class="font-semibold text-gray-900 mb-1">{shoe.name}</h3>
               {shoe.category && (
                 <span class="text-xs text-gray-400">{shoe.category}</span>
               )}
