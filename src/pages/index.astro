@@ -4,6 +4,8 @@ import { getShoes } from '../lib/db';
 
 const shoes = await getShoes();
 const categories = [...new Set(shoes.map((s) => s.category).filter(Boolean))];
+const selectedCategory = Astro.url.searchParams.get('categoria');
+const filteredShoes = selectedCategory ? shoes.filter((s) => s.category === selectedCategory) : shoes;
 ---
 
 <BaseLayout>
@@ -44,13 +46,13 @@ const categories = [...new Set(shoes.map((s) => s.category).filter(Boolean))];
   <main class="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pb-20">
     {categories.length > 0 && (
       <div class="flex gap-3 mb-12 flex-wrap justify-center">
-        <a href="/" class="px-6 py-2.5 rounded-full bg-[#f0e4e0] text-[#c9a8a8] text-xs tracking-[0.08em] font-medium hover:bg-[#e8d5d0] transition-all duration-300">
+        <a href="/" class={`px-6 py-2.5 rounded-full text-xs tracking-[0.08em] font-medium transition-all duration-300 ${!selectedCategory ? 'bg-[#f0e4e0] text-[#c9a8a8]' : 'bg-white text-[#b5a5a5] border border-[#f0ebe7] hover:bg-[#f0e4e0] hover:text-[#c9a8a8]'}`}>
           Todas las categorías
         </a>
         {categories.map((cat) => (
           <a
             href={`/?categoria=${cat}`}
-            class="px-6 py-2.5 rounded-full bg-white text-[#b5a5a5] text-xs tracking-[0.08em] font-medium hover:bg-[#f0e4e0] hover:text-[#c9a8a8] transition-all duration-300 border border-[#f0ebe7]"
+            class={`px-6 py-2.5 rounded-full text-xs tracking-[0.08em] font-medium transition-all duration-300 ${selectedCategory === cat ? 'bg-[#f0e4e0] text-[#c9a8a8]' : 'bg-white text-[#b5a5a5] border border-[#f0ebe7] hover:bg-[#f0e4e0] hover:text-[#c9a8a8]'}`}
           >
             {cat}
           </a>
@@ -58,13 +60,13 @@ const categories = [...new Set(shoes.map((s) => s.category).filter(Boolean))];
       </div>
     )}
 
-    {shoes.length === 0 ? (
+    {filteredShoes.length === 0 ? (
       <div class="text-center py-24">
-        <p class="text-[#d4c5c5] text-sm font-light tracking-wide">La colección se está actualizando. Vuelve pronto.</p>
+        <p class="text-[#d4c5c5] text-sm font-light tracking-wide">No hay productos en esta categoría.</p>
       </div>
     ) : (
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-10">
-        {shoes.map((shoe) => (
+        {filteredShoes.map((shoe) => (
           <article class="group cursor-pointer">
             <div class="relative aspect-[3/4] bg-[#f5f0ee] rounded-sm overflow-hidden mb-4">
               {shoe.image_url ? (
