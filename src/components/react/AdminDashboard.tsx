@@ -18,6 +18,14 @@ function getTotalStock(sizes: Record<string, number>): number {
 export default function AdminDashboard() {
   const [shoes, setShoes] = useState<Shoe[]>([]);
   const [loading, setLoading] = useState(true);
+  const [searchName, setSearchName] = useState('');
+  const [searchDescription, setSearchDescription] = useState('');
+
+  const filteredShoes = shoes.filter((s) => {
+    const matchName = s.name.toLowerCase().includes(searchName.toLowerCase());
+    const matchDesc = s.description.toLowerCase().includes(searchDescription.toLowerCase());
+    return matchName && matchDesc;
+  });
 
   const fetchShoes = async () => {
     try {
@@ -64,9 +72,32 @@ export default function AdminDashboard() {
         </a>
       </div>
 
+      {shoes.length > 0 && (
+        <div className="flex gap-3 mb-4">
+          <input
+            type="text"
+            value={searchName}
+            onChange={(e) => setSearchName(e.target.value)}
+            placeholder="Buscar por nombre..."
+            className="w-full max-w-xs px-3.5 py-2 border border-[#f0ebe7] rounded-lg focus:ring-2 focus:ring-[#c9a8a8] focus:border-[#c9a8a8] outline-none text-[#3d3d3d] text-sm placeholder:text-[#d4c5c5] transition-colors duration-150"
+          />
+          <input
+            type="text"
+            value={searchDescription}
+            onChange={(e) => setSearchDescription(e.target.value)}
+            placeholder="Buscar por descripción..."
+            className="w-full max-w-xs px-3.5 py-2 border border-[#f0ebe7] rounded-lg focus:ring-2 focus:ring-[#c9a8a8] focus:border-[#c9a8a8] outline-none text-[#3d3d3d] text-sm placeholder:text-[#d4c5c5] transition-colors duration-150"
+          />
+        </div>
+      )}
+
       {shoes.length === 0 ? (
         <div className="text-center py-16 bg-white rounded-lg shadow-sm border border-[#f0ebe7]">
           <p className="text-[#d4c5c5] text-sm font-light">No hay productos. ¡Agregá el primero!</p>
+        </div>
+      ) : filteredShoes.length === 0 ? (
+        <div className="text-center py-16 bg-white rounded-lg shadow-sm border border-[#f0ebe7]">
+          <p className="text-[#d4c5c5] text-sm font-light">No se encontraron productos con esos filtros.</p>
         </div>
       ) : (
         <div className="overflow-x-auto rounded-lg border border-[#f0ebe7] shadow-sm">
@@ -83,7 +114,7 @@ export default function AdminDashboard() {
               </tr>
             </thead>
             <tbody>
-              {shoes.map((shoe) => (
+              {filteredShoes.map((shoe) => (
                 <tr key={shoe.id} className="border-b border-[#f0ebe7] hover:bg-[#faf7f5] transition-colors duration-150">
                   <td className="px-4 py-3">
                     {shoe.image_url ? (
