@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-const TALLES = ['35', '36', '37', '38', '39', '40', '41', '42', '43', '44', '45'];
+const TALLES = ['33', '34', '35', '36', '37', '38', '39', '40', '41', '42', '43', '44', '45'];
 
 type ShoeFormData = {
   name: string;
