@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import QRCode from 'qrcode';
 
 type Shoe = {
   id: number;
@@ -13,6 +14,40 @@ type Shoe = {
 
 function getTotalStock(sizes: Record<string, number>): number {
   return Object.values(sizes).reduce((sum, qty) => sum + qty, 0);
+}
+
+function QRCell({ shoe }: { shoe: Shoe }) {
+  const [qrUrl, setQrUrl] = useState('');
+
+  useEffect(() => {
+    const sizesText = Object.entries(shoe.sizes)
+      .filter(([, q]) => q > 0)
+      .map(([t, q]) => `${t}: ${q}`)
+      .join('\n');
+
+    const data = [
+      `Producto: ${shoe.name}`,
+      `Categoría: ${shoe.category}`,
+      `Precio: $${Number(shoe.price).toFixed(2)}`,
+      `Stock total: ${getTotalStock(shoe.sizes)} uds.`,
+      sizesText ? `\nTalles:\n${sizesText}` : '',
+      `\nID: ${shoe.id}`,
+    ]
+      .filter(Boolean)
+      .join('\n');
+
+    QRCode.toDataURL(data, { width: 120, margin: 2, color: { dark: '#3d3d3d', light: '#ffffff' } })
+      .then(setQrUrl)
+      .catch(() => {});
+  }, [shoe]);
+
+  return qrUrl ? (
+    <img src={qrUrl} alt={`QR ${shoe.name}`} className="w-[60px] h-[60px] rounded" />
+  ) : (
+    <div className="w-[60px] h-[60px] bg-[#f5f0ee] rounded flex items-center justify-center text-[#d4c5c5] text-xs">
+      ...
+    </div>
+  );
 }
 
 export default function AdminDashboard() {
@@ -110,6 +145,7 @@ export default function AdminDashboard() {
                 <th className="px-4 py-3.5 text-left text-xs tracking-[0.08em] uppercase font-medium text-[#b5a5a5]">Categoría</th>
                 <th className="px-4 py-3.5 text-left text-xs tracking-[0.08em] uppercase font-medium text-[#b5a5a5]">Precio</th>
                 <th className="px-4 py-3.5 text-left text-xs tracking-[0.08em] uppercase font-medium text-[#b5a5a5]">Stock</th>
+                <th className="px-4 py-3.5 text-left text-xs tracking-[0.08em] uppercase font-medium text-[#b5a5a5]">QR</th>
                 <th className="px-4 py-3.5 text-left text-xs tracking-[0.08em] uppercase font-medium text-[#b5a5a5]">Acciones</th>
               </tr>
             </thead>
@@ -154,6 +190,9 @@ export default function AdminDashboard() {
                         </span>
                       )}
                     </div>
+                  </td>
+                  <td className="px-4 py-3">
+                    <QRCell shoe={shoe} />
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-3">
