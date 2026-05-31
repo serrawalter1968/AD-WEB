@@ -36,15 +36,17 @@ function QRCell({ shoe }: { shoe: Shoe }) {
       .filter(Boolean)
       .join('\n');
 
-    QRCode.toDataURL(data, { width: 120, margin: 2, color: { dark: '#3d3d3d', light: '#ffffff' } })
+    QRCode.toDataURL(data, { width: 300, margin: 1, color: { dark: '#000000', light: '#ffffff' } })
       .then(setQrUrl)
       .catch(() => {});
   }, [shoe]);
 
   return qrUrl ? (
-    <img src={qrUrl} alt={`QR ${shoe.name}`} className="w-[60px] h-[60px] rounded" />
+    <a href={qrUrl} target="_blank" title="Abrir QR completo">
+      <img src={qrUrl} alt={`QR ${shoe.name}`} className="w-[80px] h-[80px] rounded hover:ring-2 hover:ring-[#c9a8a8] transition-all duration-150" />
+    </a>
   ) : (
-    <div className="w-[60px] h-[60px] bg-[#f5f0ee] rounded flex items-center justify-center text-[#d4c5c5] text-xs">
+    <div className="w-[80px] h-[80px] bg-[#f5f0ee] rounded flex items-center justify-center text-[#d4c5c5] text-xs">
       ...
     </div>
   );
