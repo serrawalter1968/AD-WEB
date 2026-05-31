@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS shoes (
   description TEXT DEFAULT '',
   category VARCHAR(100) DEFAULT '',
   price DECIMAL(10, 2) DEFAULT 0,
-  quantity INTEGER NOT NULL DEFAULT 0,
+  sizes JSONB NOT NULL DEFAULT '{}'::jsonb,
   image_url TEXT DEFAULT '',
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()

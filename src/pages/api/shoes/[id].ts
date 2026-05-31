@@ -39,7 +39,7 @@ export const PUT: APIRoute = async (context) => {
       description: body.description,
       category: body.category,
       price: body.price !== undefined ? parseFloat(body.price) : undefined,
-      quantity: body.quantity !== undefined ? parseInt(body.quantity) : undefined,
+      sizes: body.sizes,
       image_url: body.image_url,
     });
 

@@ -29,8 +29,8 @@ export const POST: APIRoute = async (context) => {
 
     const body = await context.request.json();
 
-    if (!body.name || body.quantity === undefined) {
-      return new Response(JSON.stringify({ error: 'Nombre y cantidad son requeridos' }), {
+    if (!body.name) {
+      return new Response(JSON.stringify({ error: 'El nombre es requerido' }), {
         status: 400,
         headers: { 'Content-Type': 'application/json' },
       });
@@ -41,7 +41,7 @@ export const POST: APIRoute = async (context) => {
       description: body.description || '',
       category: body.category || '',
       price: parseFloat(body.price) || 0,
-      quantity: parseInt(body.quantity) || 0,
+      sizes: body.sizes || {},
       image_url: body.image_url || '',
     });
 

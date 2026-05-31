@@ -1,11 +1,13 @@
 import { useState } from 'react';
 
+const TALLES = ['35', '36', '37', '38', '39', '40', '41', '42', '43', '44', '45'];
+
 type ShoeFormData = {
   name: string;
   description: string;
   category: string;
   price: string;
-  quantity: string;
+  sizes: Record<string, string>;
   image_url: string;
 };
 
@@ -13,14 +15,33 @@ interface Props {
   initialData?: ShoeFormData & { id?: number };
 }
 
+function parseSizes(sizes: Record<string, string>): Record<string, number> {
+  const result: Record<string, number> = {};
+  for (const [talle, val] of Object.entries(sizes)) {
+    const n = parseInt(val);
+    if (!isNaN(n) && n > 0) result[talle] = n;
+  }
+  return result;
+}
+
 export default function ShoeForm({ initialData }: Props) {
   const isEdit = !!initialData?.id;
+  const defaultSizes: Record<string, string> = {};
+  if (initialData?.sizes) {
+    for (const t of TALLES) {
+      defaultSizes[t] = initialData.sizes[t] ?? '';
+    }
+  } else {
+    for (const t of TALLES) {
+      defaultSizes[t] = '';
+    }
+  }
   const [form, setForm] = useState<ShoeFormData>({
     name: initialData?.name || '',
     description: initialData?.description || '',
     category: initialData?.category || '',
     price: initialData?.price || '',
-    quantity: initialData?.quantity || '',
+    sizes: defaultSizes,
     image_url: initialData?.image_url || '',
   });
   const [file, setFile] = useState<File | null>(null);
@@ -71,7 +92,7 @@ export default function ShoeForm({ initialData }: Props) {
           description: form.description,
           category: form.category,
           price: parseFloat(form.price) || 0,
-          quantity: parseInt(form.quantity) || 0,
+          sizes: parseSizes(form.sizes),
           image_url: form.image_url,
         }),
       });
@@ -157,16 +178,27 @@ export default function ShoeForm({ initialData }: Props) {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-[#7a6a6a] mb-1.5 tracking-wide">Cantidad en stock *</label>
-          <input
-            type="number"
-            min="0"
-            value={form.quantity}
-            onChange={(e) => setForm((p) => ({ ...p, quantity: e.target.value }))}
-            required
-            className="w-full px-3.5 py-2.5 border border-[#f0ebe7] rounded-lg focus:ring-2 focus:ring-[#c9a8a8] focus:border-[#c9a8a8] outline-none text-[#3d3d3d] placeholder:text-[#d4c5c5] transition-colors duration-150"
-            placeholder="0"
-          />
+          <label className="block text-sm font-medium text-[#7a6a6a] mb-1.5 tracking-wide">Stock por talle</label>
+          <div className="grid grid-cols-4 sm:grid-cols-6 gap-2">
+            {TALLES.map((talle) => (
+              <div key={talle} className="flex flex-col items-center">
+                <span className="text-xs text-[#b5a5a5] mb-1 font-medium">Talle {talle}</span>
+                <input
+                  type="number"
+                  min="0"
+                  value={form.sizes[talle] ?? ''}
+                  onChange={(e) =>
+                    setForm((p) => ({
+                      ...p,
+                      sizes: { ...p.sizes, [talle]: e.target.value },
+                    }))
+                  }
+                  className="w-full px-2 py-2 text-center border border-[#f0ebe7] rounded-lg focus:ring-2 focus:ring-[#c9a8a8] focus:border-[#c9a8a8] outline-none text-[#3d3d3d] text-sm transition-colors duration-150"
+                  placeholder="0"
+                />
+              </div>
+            ))}
+          </div>
         </div>
 
         <div>

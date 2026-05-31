@@ -6,10 +6,14 @@ type Shoe = {
   description: string;
   category: string;
   price: number;
-  quantity: number;
+  sizes: Record<string, number>;
   image_url: string;
   created_at: string;
 };
+
+function getTotalStock(sizes: Record<string, number>): number {
+  return Object.values(sizes).reduce((sum, qty) => sum + qty, 0);
+}
 
 export default function AdminDashboard() {
   const [shoes, setShoes] = useState<Shoe[]>([]);
@@ -91,22 +95,32 @@ export default function AdminDashboard() {
                   <td className="px-4 py-3 text-sm text-[#b5a5a5]">{shoe.category || '-'}</td>
                   <td className="px-4 py-3 font-medium text-[#3d3d3d]">${Number(shoe.price).toFixed(2)}</td>
                   <td className="px-4 py-3">
-                    <span className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium ${
-                      shoe.quantity > 10
-                        ? 'bg-[#f0ebe7] text-[#7a6a6a]'
-                        : shoe.quantity > 0
-                        ? 'bg-[#f5ecec] text-[#c9a8a8]'
-                        : 'bg-[#f5ecec] text-[#d4b5b5]'
-                    }`}>
-                      <span className={`w-1.5 h-1.5 rounded-full ${
-                        shoe.quantity > 10
-                          ? 'bg-[#9cb4a8]'
-                          : shoe.quantity > 0
-                          ? 'bg-[#e8c9a0]'
-                          : 'bg-[#d4c5c5]'
-                      }`} />
-                      {shoe.quantity}
-                    </span>
+                    <div className="flex flex-col gap-1">
+                      <span className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium w-fit ${
+                        getTotalStock(shoe.sizes) > 10
+                          ? 'bg-[#f0ebe7] text-[#7a6a6a]'
+                          : getTotalStock(shoe.sizes) > 0
+                          ? 'bg-[#f5ecec] text-[#c9a8a8]'
+                          : 'bg-[#f5ecec] text-[#d4b5b5]'
+                      }`}>
+                        <span className={`w-1.5 h-1.5 rounded-full ${
+                          getTotalStock(shoe.sizes) > 10
+                            ? 'bg-[#9cb4a8]'
+                            : getTotalStock(shoe.sizes) > 0
+                            ? 'bg-[#e8c9a0]'
+                            : 'bg-[#d4c5c5]'
+                        }`} />
+                        {getTotalStock(shoe.sizes)} uds.
+                      </span>
+                      {Object.entries(shoe.sizes).filter(([, qty]) => qty > 0).length > 0 && (
+                        <span className="text-xs text-[#b5a5a5] font-light">
+                          {Object.entries(shoe.sizes)
+                            .filter(([, qty]) => qty > 0)
+                            .map(([t, q]) => `${t}: ${q}`)
+                            .join(' | ')}
+                        </span>
+                      )}
+                    </div>
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-3">

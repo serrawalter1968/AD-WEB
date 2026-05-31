@@ -8,11 +8,15 @@ export type Shoe = {
   description: string;
   category: string;
   price: number;
-  quantity: number;
+  sizes: Record<string, number>;
   image_url: string;
   created_at: string;
   updated_at: string;
 };
+
+export function getTotalStock(sizes: Record<string, number>): number {
+  return Object.values(sizes).reduce((sum, qty) => sum + qty, 0);
+}
 
 export type User = {
   id: number;
@@ -35,12 +39,13 @@ export async function createShoe(shoe: {
   description?: string;
   category?: string;
   price?: number;
-  quantity: number;
+  sizes?: Record<string, number>;
   image_url?: string;
 }): Promise<Shoe> {
+  const sizes = JSON.stringify(shoe.sizes || {});
   const result = await sql`
-    INSERT INTO shoes (name, description, category, price, quantity, image_url)
-    VALUES (${shoe.name}, ${shoe.description || ''}, ${shoe.category || ''}, ${shoe.price || 0}, ${shoe.quantity}, ${shoe.image_url || ''})
+    INSERT INTO shoes (name, description, category, price, sizes, image_url)
+    VALUES (${shoe.name}, ${shoe.description || ''}, ${shoe.category || ''}, ${shoe.price || 0}, ${sizes}, ${shoe.image_url || ''})
     RETURNING *
   `;
   return result[0] as Shoe;
@@ -51,7 +56,7 @@ export async function updateShoe(id: number, shoe: Partial<{
   description: string;
   category: string;
   price: number;
-  quantity: number;
+  sizes: Record<string, number>;
   image_url: string;
 }>): Promise<Shoe | null> {
   const fields: string[] = [];
@@ -62,7 +67,7 @@ export async function updateShoe(id: number, shoe: Partial<{
   if (shoe.description !== undefined) { fields.push(`description = $${idx++}`); values.push(shoe.description); }
   if (shoe.category !== undefined) { fields.push(`category = $${idx++}`); values.push(shoe.category); }
   if (shoe.price !== undefined) { fields.push(`price = $${idx++}`); values.push(shoe.price); }
-  if (shoe.quantity !== undefined) { fields.push(`quantity = $${idx++}`); values.push(shoe.quantity); }
+  if (shoe.sizes !== undefined) { fields.push(`sizes = $${idx++}::jsonb`); values.push(JSON.stringify(shoe.sizes)); }
   if (shoe.image_url !== undefined) { fields.push(`image_url = $${idx++}`); values.push(shoe.image_url); }
 
   if (fields.length === 0) return getShoe(id);
