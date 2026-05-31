@@ -22,10 +22,8 @@ async function migrate() {
   await sql`ALTER TABLE shoes DROP COLUMN IF EXISTS quantity`;
 
   console.log('Migración completada!');
-  process.exit(0);
 }
 
 migrate().catch((err) => {
   console.error('Error en migración:', err);
-  process.exit(1);
 });

@@ -10,8 +10,8 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "seed": "node scripts/seed.mjs",
-    "migrate:sizes": "node scripts/migrate-sizes.mjs"
+    "seed": "node --env-file .env scripts/seed.mjs",
+    "migrate:sizes": "node --env-file .env scripts/migrate-sizes.mjs"
   },
   "dependencies": {
     "@astrojs/react": "^5.0.6",
