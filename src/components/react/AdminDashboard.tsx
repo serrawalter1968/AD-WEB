@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import QRCode from 'qrcode';
 
 type Shoe = {
@@ -17,38 +17,49 @@ function getTotalStock(sizes: Record<string, number>): number {
 }
 
 function QRCell({ shoe }: { shoe: Shoe }) {
-  const [qrUrl, setQrUrl] = useState('');
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [showModal, setShowModal] = useState(false);
+  const [fullQr, setFullQr] = useState('');
 
   useEffect(() => {
     const sizesText = Object.entries(shoe.sizes)
       .filter(([, q]) => q > 0)
       .map(([t, q]) => `${t}: ${q}`)
-      .join('\n');
+      .join(', ');
 
     const data = [
       `Producto: ${shoe.name}`,
       `Categoría: ${shoe.category}`,
       `Precio: $${Number(shoe.price).toFixed(2)}`,
-      `Stock total: ${getTotalStock(shoe.sizes)} uds.`,
-      sizesText ? `\nTalles:\n${sizesText}` : '',
-      `\nID: ${shoe.id}`,
+      `Stock: ${getTotalStock(shoe.sizes)} uds.`,
+      sizesText ? `Talles: ${sizesText}` : '',
     ]
       .filter(Boolean)
-      .join('\n');
+      .join(' | ');
 
-    QRCode.toDataURL(data, { width: 300, margin: 1, color: { dark: '#000000', light: '#ffffff' } })
-      .then(setQrUrl)
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    QRCode.toCanvas(canvas, data, { width: 150, margin: 2, color: { dark: '#000000', light: '#ffffff' } })
+      .then(() => {
+        setFullQr(canvas.toDataURL('image/png'));
+      })
       .catch(() => {});
   }, [shoe]);
 
-  return qrUrl ? (
-    <a href={qrUrl} target="_blank" title="Abrir QR completo">
-      <img src={qrUrl} alt={`QR ${shoe.name}`} className="w-[80px] h-[80px] rounded hover:ring-2 hover:ring-[#c9a8a8] transition-all duration-150" />
-    </a>
-  ) : (
-    <div className="w-[80px] h-[80px] bg-[#f5f0ee] rounded flex items-center justify-center text-[#d4c5c5] text-xs">
-      ...
-    </div>
+  return (
+    <>
+      <canvas ref={canvasRef} className="w-[80px] h-[80px] rounded cursor-pointer hover:ring-2 hover:ring-[#c9a8a8] transition-all duration-150" onClick={() => setShowModal(true)} />
+      {showModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={() => setShowModal(false)}>
+          <div className="bg-white p-6 rounded-lg shadow-xl" onClick={(e) => e.stopPropagation()}>
+            {fullQr && <img src={fullQr} alt={`QR ${shoe.name}`} className="w-[250px] h-[250px]" />}
+            <p className="text-center text-sm text-[#7a6a6a] mt-3 font-medium">{shoe.name}</p>
+            <button onClick={() => setShowModal(false)} className="mt-3 w-full py-2 text-sm text-[#b5a5a5] hover:text-[#7a6a6a] transition-colors duration-150">Cerrar</button>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 
