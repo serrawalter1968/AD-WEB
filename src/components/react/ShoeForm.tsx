@@ -160,6 +160,7 @@ export default function ShoeForm({ initialData }: Props) {
               <option value="Botas">Botas</option>
               <option value="Sandalias">Sandalias</option>
               <option value="Tacos">Tacos</option>
+              <option value="Guillermina">Guillermina</option>
               <option value="Otros">Otros</option>
             </select>
           </div>
