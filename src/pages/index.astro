@@ -110,6 +110,19 @@ const filteredShoes = selectedCategory ? shoes.filter((s) => s.category === sele
                   <span class={`text-sm font-medium ${getTotalStock(shoe.sizes) > 0 ? 'text-[#5a4a4a]' : 'text-[#c9a8a8]'}`}>{getTotalStock(shoe.sizes) > 0 ? `${getTotalStock(shoe.sizes)} en stock` : 'Agotado'}</span>
                 </span>
               </div>
+              {Object.entries(shoe.sizes).filter(([, q]) => q > 0).length > 0 && (
+                <div class="flex flex-wrap gap-1.5 mt-3">
+                  {Object.entries(shoe.sizes)
+                    .filter(([, q]) => q > 0)
+                    .map(([talle, qty]) => (
+                      <span class="inline-flex items-center gap-1 px-2.5 py-1 bg-[#f5f0ee] rounded text-xs text-[#7a6a6a] font-medium">
+                        <span class="text-[#c9a8a8]">{talle}</span>
+                        <span class="text-[#b5a5a5]">·</span>
+                        <span>{qty}</span>
+                      </span>
+                    ))}
+                </div>
+              )}
               {shoe.description && (
                 <p class="text-[#7a6a6a] text-sm leading-relaxed mt-2.5 line-clamp-2">{shoe.description}</p>
               )}
