@@ -75,6 +75,7 @@ export default function AdminDashboard() {
               <tr className="border-b border-[#f0ebe7] bg-[#faf7f5]">
                 <th className="px-4 py-3.5 text-left text-xs tracking-[0.08em] uppercase font-medium text-[#b5a5a5]">Imagen</th>
                 <th className="px-4 py-3.5 text-left text-xs tracking-[0.08em] uppercase font-medium text-[#b5a5a5]">Nombre</th>
+                <th className="px-4 py-3.5 text-left text-xs tracking-[0.08em] uppercase font-medium text-[#b5a5a5]">Descripción</th>
                 <th className="px-4 py-3.5 text-left text-xs tracking-[0.08em] uppercase font-medium text-[#b5a5a5]">Categoría</th>
                 <th className="px-4 py-3.5 text-left text-xs tracking-[0.08em] uppercase font-medium text-[#b5a5a5]">Precio</th>
                 <th className="px-4 py-3.5 text-left text-xs tracking-[0.08em] uppercase font-medium text-[#b5a5a5]">Stock</th>
@@ -92,6 +93,7 @@ export default function AdminDashboard() {
                     )}
                   </td>
                   <td className="px-4 py-3 font-medium text-[#3d3d3d]">{shoe.name}</td>
+                  <td className="px-4 py-3 text-sm text-[#b5a5a5] max-w-[200px] truncate">{shoe.description || '-'}</td>
                   <td className="px-4 py-3 text-sm text-[#b5a5a5]">{shoe.category || '-'}</td>
                   <td className="px-4 py-3 font-medium text-[#3d3d3d]">${Number(shoe.price).toFixed(2)}</td>
                   <td className="px-4 py-3">
