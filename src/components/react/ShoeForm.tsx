@@ -215,7 +215,7 @@ export default function ShoeForm({ initialData }: Props) {
           {uploading && <p className="text-sm text-[#b5a5a5] mt-1.5 font-light">Subiendo imagen...</p>}
           {form.image_url && (
             <div className="mt-3 flex items-center gap-3 p-3 bg-[#faf7f5] rounded-lg border border-[#f0ebe7]">
-              <img src={form.image_url} alt="Preview" className="w-16 h-16 object-cover rounded-md" />
+              <img src={form.image_url} alt="Preview" className="w-28 h-28 object-cover rounded-lg shadow-md border border-[#f0ebe7]" />
               <span className="text-xs text-[#b5a5a5] truncate max-w-[280px] font-light">{form.image_url}</span>
             </div>
           )}

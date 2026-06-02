@@ -167,9 +167,9 @@ export default function AdminDashboard() {
                 <tr key={shoe.id} className="border-b border-[#f0ebe7] hover:bg-[#faf7f5] transition-colors duration-150">
                   <td className="px-4 py-3">
                     {shoe.image_url ? (
-                      <img src={shoe.image_url} alt={shoe.name} className="w-12 h-12 object-cover rounded-md" />
+                      <img src={shoe.image_url} alt={shoe.name} className="w-20 h-20 object-cover rounded-lg shadow-md border border-[#f0ebe7]" />
                     ) : (
-                      <div className="w-12 h-12 bg-[#f5f0ee] rounded-md flex items-center justify-center text-[#d4c5c5] text-xs">Sin img</div>
+                      <div className="w-20 h-20 bg-[#f5f0ee] rounded-lg flex items-center justify-center text-[#d4c5c5] text-xs shadow-sm border border-[#f0ebe7]">Sin img</div>
                     )}
                   </td>
                   <td className="px-4 py-3 font-medium text-[#3d3d3d]">{shoe.name}</td>
