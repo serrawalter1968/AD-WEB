@@ -88,7 +88,7 @@ const filteredShoes = selectedCategory ? shoes.filter((s) => s.category === sele
 
               {getTotalStock(shoe.sizes) === 0 && (
                 <div class="absolute top-3 left-3 bg-[#d4b5b5]/90 text-white text-xs tracking-[0.15em] uppercase px-3 py-1.5 font-semibold rounded-sm">
-                  Agotado
+                  Sin stock
                 </div>
               )}
 
@@ -103,7 +103,7 @@ const filteredShoes = selectedCategory ? shoes.filter((s) => s.category === sele
                 )}
                 <span class={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full ${getTotalStock(shoe.sizes) > 0 ? 'bg-[#f0ebe7]' : 'bg-[#f5ecec]'}`}>
                   <span class={`w-2 h-2 rounded-full ${getTotalStock(shoe.sizes) > 0 ? 'bg-[#9cb4a8]' : 'bg-[#d4c5c5]'}`} />
-                  <span class={`text-sm font-medium ${getTotalStock(shoe.sizes) > 0 ? 'text-[#5a4a4a]' : 'text-[#c9a8a8]'}`}>{getTotalStock(shoe.sizes) > 0 ? `${getTotalStock(shoe.sizes)} en stock` : 'Agotado'}</span>
+                  <span class={`text-sm font-medium ${getTotalStock(shoe.sizes) > 0 ? 'text-[#5a4a4a]' : 'text-[#c9a8a8]'}`}>{getTotalStock(shoe.sizes) > 0 ? `${getTotalStock(shoe.sizes)} en stock` : 'Sin stock'}</span>
                 </span>
               </div>
               {Object.entries(shoe.sizes).filter(([, q]) => q > 0).length > 0 && (
