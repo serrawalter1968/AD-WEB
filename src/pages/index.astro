@@ -67,7 +67,10 @@ const filteredShoes = selectedCategory ? shoes.filter((s) => s.category === sele
     ) : (
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-10">
         {filteredShoes.map((shoe) => (
-          <article class="group cursor-pointer border border-[#3d3d3d]/20 hover:border-[#3d3d3d]/60 rounded-sm p-4 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-lg hover:shadow-black/5">
+          <article
+            class="group cursor-pointer border border-[#3d3d3d]/20 hover:border-[#3d3d3d]/60 rounded-sm p-4 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-lg hover:shadow-black/5"
+            data-shoe={JSON.stringify(shoe)}
+          >
             <div class="relative aspect-[3/4] bg-[#f5f0ee] rounded-sm overflow-hidden mb-4">
               {shoe.image_url ? (
                 <>
@@ -142,4 +145,97 @@ const filteredShoes = selectedCategory ? shoes.filter((s) => s.category === sele
       </div>
     </div>
   </footer>
+
+  <!-- Modal for product card expansion -->
+  <div id="product-modal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/40 backdrop-blur-sm">
+    <div class="relative max-w-lg w-full mx-4 max-h-[90vh] overflow-y-auto bg-white rounded-lg shadow-2xl p-6 sm:p-8">
+      <button id="modal-close" class="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-[#f5f0ee] hover:bg-[#e8ddd8] text-[#7a6a6a] hover:text-[#3d3d3d] transition-colors duration-200 cursor-pointer">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+      <div id="modal-content"></div>
+    </div>
+  </div>
 </BaseLayout>
+
+<script>
+  const modal = document.getElementById('product-modal');
+  const modalContent = document.getElementById('modal-content');
+  const modalClose = document.getElementById('modal-close');
+
+  function openModal(shoe) {
+    const totalStock = Object.values(shoe.sizes).reduce((sum, q) => sum + q, 0);
+    const inStock = Object.entries(shoe.sizes).filter(([, q]) => q > 0);
+
+    modalContent.innerHTML = `
+      <div class="aspect-[3/4] bg-[#f5f0ee] rounded-lg overflow-hidden mb-5">
+        ${shoe.image_url
+          ? `<img src="${shoe.image_url}" alt="${shoe.name}" class="w-full h-full object-cover" />`
+          : `<div class="w-full h-full flex items-center justify-center">
+              <svg class="w-16 h-16 text-[#e0d5d0]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+            </div>`
+        }
+      </div>
+
+      <h2 class="font-['Playfair_Display'] text-2xl font-semibold text-[#3d3d3d] leading-tight">${shoe.name}</h2>
+
+      <div class="flex items-center justify-between mt-3">
+        ${shoe.category
+          ? `<span class="text-[#c9a8a8] text-xs tracking-[0.12em] uppercase font-medium">${shoe.category}</span>`
+          : ''}
+        <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full ${totalStock > 0 ? 'bg-[#f0ebe7]' : 'bg-[#f5ecec]'}">
+          <span class="w-2 h-2 rounded-full ${totalStock > 0 ? 'bg-[#9cb4a8]' : 'bg-[#d4c5c5]'}" />
+          <span class="text-sm font-medium ${totalStock > 0 ? 'text-[#5a4a4a]' : 'text-[#c9a8a8]'}">${totalStock > 0 ? `${totalStock} en stock` : 'Sin stock'}</span>
+        </span>
+      </div>
+
+      ${inStock.length > 0
+        ? `<div class="flex flex-wrap gap-1.5 mt-3">
+            ${inStock.map(([talle, qty]) =>
+              `<span class="inline-flex items-center gap-1 px-2.5 py-1 bg-[#f5f0ee] rounded text-xs text-[#7a6a6a] font-medium">
+                <span class="text-[#c9a8a8]">${talle}</span>
+                <span class="text-[#b5a5a5]">·</span>
+                <span>${qty}</span>
+              </span>`
+            ).join('')}
+          </div>`
+        : ''}
+
+      ${shoe.description
+        ? `<p class="text-[#7a6a6a] text-sm leading-relaxed mt-4">${shoe.description}</p>`
+        : ''}
+    `;
+
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+    document.body.style.overflow = '';
+  }
+
+  document.querySelectorAll('[data-shoe]').forEach((el) => {
+    el.addEventListener('click', () => {
+      try {
+        const shoe = JSON.parse(el.dataset.shoe);
+        openModal(shoe);
+      } catch (e) {
+        // ignore parse errors
+      }
+    });
+  });
+
+  modalClose.addEventListener('click', closeModal);
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) closeModal();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeModal();
+  });
+</script>

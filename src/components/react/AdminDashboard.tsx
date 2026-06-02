@@ -110,7 +110,7 @@ export default function AdminDashboard() {
       <div className="flex justify-between items-center mb-8">
         <div>
           <h1 className="text-3xl font-bold text-[#3d3d3d] tracking-tight">Stock de Calzado</h1>
-          <p className="text-sm text-[#b5a5a5] font-light mt-1">{shoes.length} producto{shoes.length !== 1 ? 's' : ''} registrado{shoes.length !== 1 ? 's' : ''}</p>
+          <p className="text-sm text-[#b5a5a5] font-light mt-1">{shoes.length} producto{shoes.length !== 1 ? 's' : ''} registrado{shoes.length !== 1 ? 's' : ''} — {shoes.reduce((sum, s) => sum + getTotalStock(s.sizes), 0)} unidades en stock</p>
         </div>
         <a
           href="/admin/add"
