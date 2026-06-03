@@ -149,7 +149,7 @@ const filteredShoes = selectedCategory ? shoes.filter((s) => s.category === sele
   <!-- Modal for product card expansion -->
   <div id="product-modal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/40 backdrop-blur-sm">
     <div class="relative max-w-lg w-full mx-4 max-h-[90vh] overflow-y-auto bg-white rounded-lg shadow-2xl p-6 sm:p-8">
-      <button id="modal-close" class="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-[#f5f0ee] hover:bg-[#e8ddd8] text-[#7a6a6a] hover:text-[#3d3d3d] transition-colors duration-200 cursor-pointer">
+      <button id="modal-close" class="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-[#f5f0ee] hover:bg-[#e8ddd8] text-[#7a6a6a] hover:text-[#3d3d3d] transition-colors duration-200 cursor-pointer z-10">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
         </svg>
@@ -167,9 +167,21 @@ const filteredShoes = selectedCategory ? shoes.filter((s) => s.category === sele
   function openModal(shoe) {
     const totalStock = Object.values(shoe.sizes).reduce((sum, q) => sum + q, 0);
     const inStock = Object.entries(shoe.sizes).filter(([, q]) => q > 0);
+    const sizesCount = inStock.length;
+    const lowStock = totalStock > 0 && totalStock <= 10;
+
+    const stockBadge = totalStock === 0
+      ? `<div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#f5ecec] border border-[#e8d5d0]">
+          <span class="w-1.5 h-1.5 rounded-full bg-[#d4b5b5]"></span>
+          <span class="text-sm font-medium text-[#c9a8a8]">Sin stock</span>
+        </div>`
+      : `<div class="inline-flex items-center gap-2 px-4 py-2 rounded-full ${lowStock ? 'bg-[#fdf4e8] border border-[#f0dcc4]' : 'bg-[#eef3f0] border border-[#d4e3d9]'}">
+          <span class="w-1.5 h-1.5 rounded-full ${lowStock ? 'bg-[#e8c9a0]' : 'bg-[#9cb4a8]'}"></span>
+          <span class="text-sm font-medium ${lowStock ? 'text-[#a88a5a]' : 'text-[#5a7a6a]'}">${totalStock} unidades disponibles</span>
+        </div>`;
 
     modalContent.innerHTML = `
-      <div class="aspect-[3/4] bg-[#f5f0ee] rounded-lg overflow-hidden mb-5">
+      <div class="aspect-[3/4] bg-[#f5f0ee] rounded-lg overflow-hidden mb-6 relative">
         ${shoe.image_url
           ? `<img src="${shoe.image_url}" alt="${shoe.name}" class="w-full h-full object-cover" />`
           : `<div class="w-full h-full flex items-center justify-center">
@@ -178,6 +190,47 @@ const filteredShoes = selectedCategory ? shoes.filter((s) => s.category === sele
               </svg>
             </div>`
         }
+        ${totalStock === 0 ? `<div class="absolute top-3 left-3 bg-[#d4b5b5]/95 text-white text-xs tracking-[0.15em] uppercase px-3 py-1.5 font-semibold rounded-sm">Sin stock</div>` : ''}
+      </div>
+
+      <div class="space-y-4">
+        <div>
+          ${shoe.category
+            ? `<span class="text-[#c9a8a8] text-[10px] tracking-[0.2em] uppercase font-medium">${shoe.category}</span>`
+            : ''}
+          <h2 class="font-['Playfair_Display'] text-2xl sm:text-3xl font-semibold text-[#3d3d3d] leading-tight mt-1.5">${shoe.name}</h2>
+        </div>
+
+        ${stockBadge}
+
+        ${sizesCount > 0
+          ? `<div class="pt-2">
+              <p class="text-[10px] tracking-[0.2em] uppercase text-[#b5a5a5] font-medium mb-3">Disponibilidad por talle</p>
+              <div class="grid grid-cols-3 sm:grid-cols-4 gap-2">
+                ${inStock.map(([talle, qty]) => {
+                  const isLow = qty <= 3;
+                  return `<div class="flex flex-col items-center justify-center py-3 px-2 rounded-lg ${isLow ? 'bg-[#fdf4e8] border border-[#f0dcc4]' : 'bg-[#f5f0ee] border border-[#ebe3df]'} transition-colors duration-200">
+                    <span class="font-['Playfair_Display'] text-base font-semibold ${isLow ? 'text-[#a88a5a]' : 'text-[#3d3d3d]'}">${talle}</span>
+                    <span class="text-[10px] tracking-wider uppercase ${isLow ? 'text-[#a88a5a]' : 'text-[#b5a5a5]'} mt-0.5">${qty} ud${qty !== 1 ? 's' : ''}</span>
+                  </div>`;
+                }).join('')}
+              </div>
+            </div>`
+          : `<p class="text-sm text-[#b5a5a5] italic font-light">No hay talles disponibles por el momento.</p>`}
+
+        ${shoe.description
+          ? `<div class="pt-2">
+              <p class="text-[10px] tracking-[0.2em] uppercase text-[#b5a5a5] font-medium mb-2">Descripción</p>
+              <p class="text-[#5a4a4a] text-sm leading-relaxed">${shoe.description}</p>
+            </div>`
+          : ''}
+      </div>
+    `;
+
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+    document.body.style.overflow = 'hidden';
+  }
       </div>
 
       <h2 class="font-['Playfair_Display'] text-2xl font-semibold text-[#3d3d3d] leading-tight">${shoe.name}</h2>
