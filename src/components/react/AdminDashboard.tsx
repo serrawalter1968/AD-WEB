@@ -173,7 +173,7 @@ export default function AdminDashboard() {
                     )}
                   </td>
                   <td className="px-4 py-3 font-medium text-[#3d3d3d]">{shoe.name}</td>
-                  <td className="px-4 py-3 text-xs text-[#b5a5a5] max-w-[250px] leading-relaxed">{shoe.description || '-'}</td>
+                  <td className="px-4 py-3 font-bold text-xs text-[#b5a5a5] max-w-[250px] leading-relaxed">{shoe.description || '-'}</td>
                   <td className="px-4 py-3 text-sm text-[#b5a5a5]">{shoe.category || '-'}</td>
                   <td className="px-4 py-3 font-medium text-[#3d3d3d]">${Number(shoe.price).toFixed(2)}</td>
                   <td className="px-4 py-3">
