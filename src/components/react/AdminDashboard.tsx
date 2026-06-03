@@ -1,5 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
-import QRCode from 'qrcode';
+import { useState, useEffect } from 'react';
 
 type Shoe = {
   id: number;
@@ -14,53 +13,6 @@ type Shoe = {
 
 function getTotalStock(sizes: Record<string, number>): number {
   return Object.values(sizes).reduce((sum, qty) => sum + qty, 0);
-}
-
-function QRCell({ shoe }: { shoe: Shoe }) {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [showModal, setShowModal] = useState(false);
-  const [fullQr, setFullQr] = useState('');
-
-  useEffect(() => {
-    const sizesText = Object.entries(shoe.sizes)
-      .filter(([, q]) => q > 0)
-      .map(([t, q]) => `${t}: ${q}`)
-      .join(', ');
-
-    const data = [
-      `Producto: ${shoe.name}`,
-      `Categoría: ${shoe.category}`,
-      `Precio: $${Number(shoe.price).toFixed(2)}`,
-      `Stock: ${getTotalStock(shoe.sizes)} uds.`,
-      sizesText ? `Talles: ${sizesText}` : '',
-    ]
-      .filter(Boolean)
-      .join(' | ');
-
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    QRCode.toCanvas(canvas, data, { width: 150, margin: 2, color: { dark: '#000000', light: '#ffffff' } })
-      .then(() => {
-        setFullQr(canvas.toDataURL('image/png'));
-      })
-      .catch(() => {});
-  }, [shoe]);
-
-  return (
-    <>
-      <canvas ref={canvasRef} className="w-[80px] h-[80px] rounded cursor-pointer hover:ring-2 hover:ring-[#c9a8a8] transition-all duration-150" onClick={() => setShowModal(true)} />
-      {showModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={() => setShowModal(false)}>
-          <div className="bg-white p-6 rounded-lg shadow-xl" onClick={(e) => e.stopPropagation()}>
-            {fullQr && <img src={fullQr} alt={`QR ${shoe.name}`} className="w-[250px] h-[250px]" />}
-            <p className="text-center text-sm text-[#7a6a6a] mt-3 font-medium">{shoe.name}</p>
-            <button onClick={() => setShowModal(false)} className="mt-3 w-full py-2 text-sm text-[#b5a5a5] hover:text-[#7a6a6a] transition-colors duration-150">Cerrar</button>
-          </div>
-        </div>
-      )}
-    </>
-  );
 }
 
 export default function AdminDashboard() {
@@ -158,7 +110,6 @@ export default function AdminDashboard() {
                 <th className="px-4 py-3.5 text-left text-xs tracking-[0.08em] uppercase font-medium text-[#b5a5a5]">Categoría</th>
                 <th className="px-4 py-3.5 text-left text-xs tracking-[0.08em] uppercase font-medium text-[#b5a5a5]">Precio</th>
                 <th className="px-4 py-3.5 text-left text-xs tracking-[0.08em] uppercase font-medium text-[#b5a5a5]">Stock</th>
-                <th className="px-4 py-3.5 text-left text-xs tracking-[0.08em] uppercase font-medium text-[#b5a5a5]">QR</th>
                 <th className="px-4 py-3.5 text-left text-xs tracking-[0.08em] uppercase font-medium text-[#b5a5a5]">Acciones</th>
               </tr>
             </thead>
@@ -203,9 +154,6 @@ export default function AdminDashboard() {
                         </span>
                       )}
                     </div>
-                  </td>
-                  <td className="px-4 py-3">
-                    <QRCell shoe={shoe} />
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-3">
